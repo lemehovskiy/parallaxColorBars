@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Parallax example</title>
+
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+
+<header></header>
+
+
+<div class="spacer"></div>
+
+<div class="spacer"></div>
+
+
+<div class="parallax-color-bar-section">
+
+    <div class="section-background back-img" style="background-image: url('imgs/img1.jpg')"></div>
+
+    <div class="parallax-color-bar parallax-move" data-parallax-color-bar='{"left": 500, "top": 50}' data-parallax-content='{"shift": 10, "duration": 1}'>
+
+        <div class="parallax-color-bar-background back-img" style="background-image: url('imgs/img1.jpg')"></div>
+
+    </div>
+
+</div>
+
+
+
+<div class="spacer"></div>
+
+<div class="spacer"></div>
+
+
+<script src="js/jquery-3.2.0.min.js"></script>
+<script src="js/TweenLite.min.js"></script>
+<script src="js/CSSPlugin.min.js"></script>
+
+<script src="js/parallaxContent.js"></script>
+
+<script src="../build/parallaxColorBars.js"></script>
+
+
+<script>
+
+    $('.parallax-move').parallaxContent({
+
+    });
+
+    $('.parallax-color-bar-section').parallaxColorBars();
+
+</script>
+
+</body>
+</html>
