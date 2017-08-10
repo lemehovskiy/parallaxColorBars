@@ -16,7 +16,7 @@
 </a>Demo
 </h4>
 
-<p><a href="https://lemehovskiy.github.io/parallaxContent/demo/">https://lemehovskiy.github.io/parallaxColorBars/demo/</a>
+<p><a href="https://lemehovskiy.github.io/parallaxColorBars/demo/">https://lemehovskiy.github.io/parallaxColorBars/demo/</a>
 </p>
 
 
