@@ -29,20 +29,8 @@
 </h3>
 <p>In parallaxColorBars you can now add settings using the data-parallax-color-bar attribute. You still need to call
     $(element).parallaxColorBars()
-    to initialize parallaxContent on the element.
+    to initialize parallaxColorBars on the element.
 </p>
-
-<p>Example:</p>
-
-<div class="highlight highlight-text-html-basic">
-    <pre>&lt;<span class="pl-ent">div</span> <span
-            class="pl-e">data-parallax-color-bar</span>=<span
-            class="pl-s"><span class="pl-pds">'</span>{"left": 10, "top": 10, "width": 20, "height": 30, "shift": 50, "duration": 1}<span
-            class="pl-pds">'</span></span>&gt;
-    Lorem ipsum
-&lt;/<span class="pl-ent">div</span>&gt;
-</pre>
-</div>
 
 <h3>
     <a id="user-content-settings" class="anchor" href="#settings" aria-hidden="true">
