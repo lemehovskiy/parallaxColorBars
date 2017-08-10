@@ -60,12 +60,11 @@
                             top: color_bar_options.top + '%',
                             position: 'absolute',
                             overflow: 'hidden',
-                            width: color_bar_options.width + 'px',
-                            height: color_bar_options.height + 'px'
+                            width: color_bar_options.width + '%',
+                            height: color_bar_options.height + '%'
+
                         });
 
-
-                        console.log(parallax_section_width);
 
 
                         $color_bar_background.css({
@@ -90,7 +89,7 @@
                                 width: parallax_section_width + 'px',
                                 height: parallax_section_height + 'px',
                                 left: - (parallax_section_width / 100 * color_bar_options.left) + 'px',
-                                top: - (parallax_section_height / 100 * color_bar_options.top) + '%'
+                                top: - (parallax_section_height / 100 * color_bar_options.top) + 'px'
                             });
 
                             offset = $this_bar.offset();
