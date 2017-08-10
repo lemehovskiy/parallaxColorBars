@@ -73,22 +73,9 @@ header {
   min-height: 600px;
   position: relative; }
 
-.section-background {
+.parallax-color-bar-section-background {
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%; }
-
-.parallax-color-bar {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  position: relative; }
-
-.bar-background {
   position: absolute;
   left: 0;
   top: 0;

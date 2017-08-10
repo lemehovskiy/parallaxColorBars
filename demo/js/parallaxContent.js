@@ -72,7 +72,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
                             y = animateShift / 100 * centerPercentShift;
 
-                            TweenLite.to($this, animateDuration, { y: y + 'px', onUpdate: function(){$this.trigger('parallaxContentMove')}});
+                            // console.log(y);
+
+                            TweenLite.to($this, animateDuration, { y: y + 'px'});
 
                         } else {
                             $this.removeClass('active');
