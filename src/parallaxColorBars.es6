@@ -1,3 +1,12 @@
+/*
+
+Parallax Color Bars
+
+Author: lemehovskiy
+Website: https://github.com/lemehovskiy
+
+ */
+
 (function ($) {
 
     $.fn.parallaxColorBars = function (method) {
