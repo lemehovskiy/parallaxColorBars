@@ -52,6 +52,48 @@
 
 </div>
 
+<div class="spacer"></div>
+
+<div class="parallax-color-bar-section">
+
+    <div class="normal-layer back-video">
+        <video src="video/SampleVideo_color.mp4" muted loop></video>
+    </div>
+
+    <div class="parallax-color-bars-list">
+
+        <div class="parallax-color-bar"
+             data-parallax-color-bar='{"left": 10, "top": 10, "width": 10, "height": 30, "shift": 200, "duration": 2}'>
+
+            <div class="parallax-color-bar-background back-video">
+                <video src="video/SampleVideo_bw.mp4" muted loop></video>
+            </div>
+
+        </div>
+
+        <div class="parallax-color-bar"
+             data-parallax-color-bar='{"left": 30, "top": 10, "width": 20, "height": 50, "shift": 100, "duration": 2}'>
+
+            <div class="parallax-color-bar-background back-video">
+                <video src="video/SampleVideo_bw.mp4" muted loop></video>
+            </div>
+
+        </div>
+
+        <div class="parallax-color-bar"
+             data-parallax-color-bar='{"left": 80, "top": 10, "width": 10, "height": 30, "shift": 100, "duration": 2}'>
+
+            <div class="parallax-color-bar-background back-video">
+                <video src="video/SampleVideo_bw.mp4" muted loop></video>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 
 <div class="spacer"></div>
 
@@ -68,6 +110,42 @@
 <script>
 
     $('.parallax-color-bar-section').parallaxColorBars();
+
+
+    //************************************
+    // RESIZE VIDEO
+    //************************************
+    function vidRescale() {
+        $('.back-video').each(function () {
+            var _width = $(this).width();
+            var _height = $(this).height();
+            var _ratio_x = $(this).data('ratio-x') || 16;
+            var _ratio_y = $(this).data('ratio-y') || 9;
+            var _video = $(this).find('video');
+            if (_width / _height > _ratio_x / _ratio_y) {
+                _video.css({
+                    "width": _width,
+                    "height": _width / _ratio_y * _ratio_x
+                });
+            } else {
+                _video.css({
+                    "width": _height / _ratio_y * _ratio_x,
+                    "height": _height
+                });
+            }
+        });
+    }
+
+    $(window).on('resize load', function () {
+        vidRescale();
+    });
+
+
+    $(window).on('load', function () {
+        $('video').each(function(){
+            $(this).get(0).play();
+        })
+    });
 
 </script>
 
