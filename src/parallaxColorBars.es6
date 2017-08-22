@@ -92,8 +92,7 @@ Website: https://github.com/lemehovskiy
                         }
 
 
-                        $(window).on('resize load', function () {
-
+                        $(window).bind('resizeEnd load', function () {
                             $color_bar_background.css({
                                 width: parallax_section_width + 'px',
                                 height: parallax_section_height + 'px',
@@ -108,6 +107,14 @@ Website: https://github.com/lemehovskiy
                             animationTriggerEnd = animationTriggerStart + windowHeight;
 
                             animationLength = animationTriggerEnd - animationTriggerStart;
+                        });
+
+
+                        $(window).resize(function () {
+                            if (this.resizeTO) clearTimeout(this.resizeTO);
+                            this.resizeTO = setTimeout(function () {
+                                $(this).trigger('resizeEnd');
+                            }, 500);
                         });
 
 
