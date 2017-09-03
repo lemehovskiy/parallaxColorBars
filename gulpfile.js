@@ -1,16 +1,16 @@
 var 	gulp         = require('gulp'),
-        autoprefixer = require('gulp-autoprefixer'),
-        minifycss      = require('gulp-uglifycss'),
-        uglify       = require('gulp-uglify'),
-        rename       = require('gulp-rename'),
-        concat       = require('gulp-concat'),
-        sass         = require('gulp-sass'),
-        plumber      = require('gulp-plumber'),
-        notify       = require('gulp-notify'),
-        streamqueue  = require('streamqueue'),
-        sourcemaps   = require('gulp-sourcemaps'),
-        merge = require('merge-stream'),
-        babel = require('gulp-babel');
+    autoprefixer = require('gulp-autoprefixer'),
+    minifycss      = require('gulp-uglifycss'),
+    uglify       = require('gulp-uglify'),
+    rename       = require('gulp-rename'),
+    concat       = require('gulp-concat'),
+    sass         = require('gulp-sass'),
+    plumber      = require('gulp-plumber'),
+    notify       = require('gulp-notify'),
+    streamqueue  = require('streamqueue'),
+    sourcemaps   = require('gulp-sourcemaps'),
+    merge = require('merge-stream'),
+    babel = require('gulp-babel');
 
 
 
@@ -53,7 +53,7 @@ gulp.task('scripts', function() {
         }))
 
         .pipe(gulp.dest('./build'))
-        
+
         .pipe(uglify())
         .pipe(rename({ suffix: '.min' }))
         .pipe(sourcemaps.write('./'))
@@ -63,6 +63,6 @@ gulp.task('scripts', function() {
 
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', ['styles', 'scripts'], function() {
-    gulp.watch('demo/sass/*.scss', ['styles']);
+    gulp.watch('demo/sass/**/*.scss', ['styles']);
     gulp.watch('src/parallaxColorBars.es6', ['scripts']);
 });

@@ -17,7 +17,11 @@ Website: https://github.com/lemehovskiy
 
                 let settings = $.extend({
                     duration: 1.5,
-                    shift: 10
+                    shift: 10,
+                    top: 50,
+                    left: 50,
+                    width: 10,
+                    height: 20
                 }, options);
 
 
@@ -37,7 +41,7 @@ Website: https://github.com/lemehovskiy
                 this.each(function () {
 
                     let $this_parallax_section = $(this),
-                        $color_bars = $this_parallax_section.find('.parallax-color-bar'),
+                        $color_bars = $this_parallax_section.find('.color-bar'),
                         parallax_section_width = $this_parallax_section.outerWidth(),
                         parallax_section_height = $this_parallax_section.outerHeight();
 
@@ -57,28 +61,18 @@ Website: https://github.com/lemehovskiy
                             offset = 0,
                             animationLength = 0,
 
+                            bar_position_top = settings.top,
+                            bar_position_left = settings.left,
+                            bar_width = settings.width,
+                            bar_height = settings.height,
+
                             animateDuration = settings.duration,
                             animateShift = settings.shift,
 
-                            $color_bar_background = $this_bar.find('.parallax-color-bar-background'),
+                            $color_bar_background = $this_bar.find('.color-bar-background'),
 
                             color_bar_options = $this_bar.data('parallax-color-bar');
 
-                        $this_bar.css({
-                            left: color_bar_options.left + '%',
-                            top: color_bar_options.top + '%',
-                            position: 'absolute',
-                            overflow: 'hidden',
-                            width: color_bar_options.width + '%',
-                            height: color_bar_options.height + '%'
-
-                        });
-
-
-
-                        $color_bar_background.css({
-                            position: 'absolute'
-                        });
 
 
                         if (color_bar_options != undefined) {
@@ -89,7 +83,40 @@ Website: https://github.com/lemehovskiy
                             if (color_bar_options.hasOwnProperty('shift')) {
                                 animateShift = color_bar_options.shift;
                             }
+
+                            if (color_bar_options.hasOwnProperty('top')) {
+                                bar_position_top = color_bar_options.top;
+                            }
+
+                            if (color_bar_options.hasOwnProperty('left')) {
+                                bar_position_left = color_bar_options.left;
+                            }
+
+                            if (color_bar_options.hasOwnProperty('width')) {
+                                bar_width = color_bar_options.width;
+                            }
+
+                            if (color_bar_options.hasOwnProperty('height')) {
+                                bar_height = color_bar_options.height;
+                            }
                         }
+
+                        $this_bar.css({
+                            top: bar_position_top + '%',
+                            left: bar_position_left + '%',
+                            position: 'absolute',
+                            overflow: 'hidden',
+                            width: bar_width + '%',
+                            height: bar_height + '%'
+
+                        });
+
+
+
+                        $color_bar_background.css({
+                            position: 'absolute'
+                        });
+
 
 
                         $(window).bind('resizeEnd load', function () {
@@ -153,7 +180,7 @@ Website: https://github.com/lemehovskiy
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('There is no method with the name ' + method + ', for jQuery.parallaxContent');
+            $.error('There is no method with the name ' + method + ', for jQuery.parallaxColorBars');
         }
     };
 

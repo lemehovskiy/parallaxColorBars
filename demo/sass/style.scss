@@ -1,31 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,600');
 
-@import "_reset.scss";
+@import "reset";
+@import "mixins";
 
 body {
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
+
 }
 
-header {
-  height: 50px;
-  background: rgba(100, 102, 31, 0.85);
-}
-
-.title {
-  font-size: 30px;
-  font-weight: 700;
-  margin: 20px 0;
-
-  .line {
-    margin: 15px 0;
-  }
-}
-
-
-.description {
-  padding: 20px 0 0;
-}
 
 .back-img {
   background-size: cover;
@@ -33,29 +16,61 @@ header {
   background-repeat: no-repeat;
 }
 
-.spacer {
-  min-height: 300px;
-  background: #60aeff;
+.container {
+  margin: auto;
+
 }
 
-.normal-layer {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+section {
+  padding: 0 20px;
 }
 
-.parallax-color-bar-section {
-  min-height: 600px;
+.rect-outer {
   position: relative;
+  .rect-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+  }
 }
 
-.parallax-color-bar-section-background {
-  filter: grayscale(100%);
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+.spacer {
+  height: 200px;
 }
+
+
+.parallax-color-bar-block {
+  .normal-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: grayscale(100%);
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  .color-bar-background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+@import "partials/section-intro";
+@import "partials/section-features-list";

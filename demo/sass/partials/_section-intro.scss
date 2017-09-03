@@ -1,0 +1,22 @@
+.section-intro {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+
+
+  .title {
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: 600;
+    @include vw-font-size(600, 50);
+  }
+}
