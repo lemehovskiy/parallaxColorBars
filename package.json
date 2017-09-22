@@ -2,7 +2,7 @@
   "name": "parallax_color_bars",
   "version": "1.0.0",
   "description": "parallax color bars",
-  "main": "index.js",
+  "main": "build/parallaxColorBars.js",
   "dependencies": {
     "gsap": "^1.20.2",
     "jquery": ">=1.7"
