@@ -1,6 +1,6 @@
 {
   "name": "parallax_color_bars",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "parallax color bars",
   "main": "build/parallaxColorBars.js",
   "dependencies": {
@@ -44,4 +44,3 @@
   "author": "lemehovskiy",
   "license": "ISC"
 }
-
