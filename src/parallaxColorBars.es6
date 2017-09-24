@@ -1,9 +1,9 @@
 /*
 
-Parallax Color Bars
+ Parallax Color Bars
 
-Author: lemehovskiy
-Website: https://github.com/lemehovskiy
+ Author: lemehovskiy
+ Website: https://github.com/lemehovskiy
 
  */
 
@@ -27,8 +27,8 @@ Website: https://github.com/lemehovskiy
             init: function (options) {
 
                 let settings = $.extend({
-                    duration: 1.5,
-                    shift: 10,
+                    duration: 2,
+                    shift: 100,
                     top: 50,
                     left: 50,
                     width: 10,
@@ -49,12 +49,22 @@ Website: https://github.com/lemehovskiy
                 });
 
 
+                $(window).resize(function () {
+                    if (this.resizeTO) clearTimeout(this.resizeTO);
+                    this.resizeTO = setTimeout(function () {
+                        $(this).trigger('resizeEnd');
+                    }, 500);
+                });
+
+
                 this.each(function () {
 
                     let $this_parallax_section = $(this),
                         $color_bars = $this_parallax_section.find('.color-bar'),
                         parallax_section_width = $this_parallax_section.outerWidth(),
-                        parallax_section_height = $this_parallax_section.outerHeight();
+                        parallax_section_height = $this_parallax_section.outerHeight(),
+                        animation_progress = 0,
+                        mirror_animation_progress = 0;
 
 
                     $(window).on('resize', function () {
@@ -62,17 +72,31 @@ Website: https://github.com/lemehovskiy
                         parallax_section_height = $this_parallax_section.outerHeight();
                     });
 
-                    $color_bars.each(function(){
 
-                        let $this_bar = $(this),
+                    $(window).on('scroll resize load', function () {
+                        animation_progress = get_scroll_progress({
+                            element: $this_parallax_section,
+                            duration: 'viewport',
+                            window_height: windowHeight
 
-                            color_bar_height = $this_bar.outerHeight(),
-                            animationTriggerStart = 0,
-                            animationTriggerEnd = 0,
-                            offset = 0,
-                            animationLength = 0,
+                        });
 
-                            bar_position_top = settings.top,
+
+                        mirror_animation_progress = get_mirror_progress(animation_progress);
+
+                        // console.log(mirror_animation_progress);
+
+                    });
+
+                    $color_bars.each(function () {
+
+
+                        let $this_bar = $(this);
+
+                        let color_bar_options = $this_bar.data('parallax-color-bar');
+                        settings = $.extend({}, settings, color_bar_options);
+
+                        let bar_position_top = settings.top,
                             bar_position_left = settings.left,
                             bar_width = settings.width,
                             bar_height = settings.height,
@@ -80,37 +104,7 @@ Website: https://github.com/lemehovskiy
                             animateDuration = settings.duration,
                             animateShift = settings.shift,
 
-                            $color_bar_background = $this_bar.find('.color-bar-background'),
-
-                            color_bar_options = $this_bar.data('parallax-color-bar');
-
-
-
-                        if (color_bar_options != undefined) {
-                            if (color_bar_options.hasOwnProperty('duration')) {
-                                animateDuration = color_bar_options.duration;
-                            }
-
-                            if (color_bar_options.hasOwnProperty('shift')) {
-                                animateShift = color_bar_options.shift;
-                            }
-
-                            if (color_bar_options.hasOwnProperty('top')) {
-                                bar_position_top = color_bar_options.top;
-                            }
-
-                            if (color_bar_options.hasOwnProperty('left')) {
-                                bar_position_left = color_bar_options.left;
-                            }
-
-                            if (color_bar_options.hasOwnProperty('width')) {
-                                bar_width = color_bar_options.width;
-                            }
-
-                            if (color_bar_options.hasOwnProperty('height')) {
-                                bar_height = color_bar_options.height;
-                            }
-                        }
+                            $color_bar_background = $this_bar.find('.color-bar-background');
 
                         $this_bar.css({
                             top: bar_position_top + '%',
@@ -123,64 +117,83 @@ Website: https://github.com/lemehovskiy
                         });
 
 
-
                         $color_bar_background.css({
                             position: 'absolute'
                         });
-
 
 
                         $(window).bind('resizeEnd load', function () {
                             $color_bar_background.css({
                                 width: parallax_section_width + 'px',
                                 height: parallax_section_height + 'px',
-                                left: - (parallax_section_width / 100 * color_bar_options.left) + 'px',
-                                top: - (parallax_section_height / 100 * color_bar_options.top) + 'px'
+                                left: -(parallax_section_width / 100 * bar_position_left) + 'px',
+                                top: -(parallax_section_height / 100 * bar_position_top) + 'px'
                             });
 
-                            offset = $this_bar.offset();
-
-                            animationTriggerStart = offset.top;
-
-                            animationTriggerEnd = animationTriggerStart + windowHeight;
-
-                            animationLength = animationTriggerEnd - animationTriggerStart;
-                        });
-
-
-                        $(window).resize(function () {
-                            if (this.resizeTO) clearTimeout(this.resizeTO);
-                            this.resizeTO = setTimeout(function () {
-                                $(this).trigger('resizeEnd');
-                            }, 500);
                         });
 
 
                         $(window).on('scroll resize load', function () {
 
-                            if (triggerPosition > animationTriggerStart && triggerPosition < animationTriggerEnd + color_bar_height) {
+                            let y = animateShift * mirror_animation_progress;
 
-                                $this_bar.addClass('active');
+                            TweenLite.to($this_bar, animateDuration, {y: y + 'px'});
+                            TweenLite.to($color_bar_background, animateDuration, {y: -y + 'px'});
 
-                                let centerPixelShift = triggerPosition - offset.top - (animationLength * 0.5);
-
-                                let centerPercentShift = centerPixelShift / (animationLength / 100) * 2;
-
-                                let y = animateShift / 100 * centerPercentShift;
-
-                                TweenLite.to($this_bar, animateDuration, {y: y + 'px'});
-                                TweenLite.to($color_bar_background, animateDuration, {y: - y + 'px'});
-
-                            }
-
-                            else {
-                                $this_bar.removeClass('active');
-                            }
 
                         })
                     })
 
                 });
+
+
+                function get_mirror_progress(progress) {
+
+                    let mirror_progress = 0;
+
+
+                    if (progress > 0.5) {
+                        mirror_progress = -(1 - 1 / 0.5 * progress)
+                    }
+                    else {
+                        mirror_progress = -(1 - 1 / 0.5 * progress)
+                    }
+
+
+                    return mirror_progress;
+
+                }
+
+
+                function get_scroll_progress(settings) {
+
+                    let $element = settings.element;
+
+                    let trigger = $(window).scrollTop() + settings.window_height;
+
+                    let element_animation_start = $element.offset().top;
+
+                    let element_animation_end = element_animation_start + settings.window_height + $element.outerHeight();
+
+                    let animation_length = element_animation_end - element_animation_start;
+
+                    let animation_progress;
+
+                    // if (trigger > element_animation_start && trigger < element_animation_end){
+                    animation_progress = (trigger - element_animation_start) / animation_length;
+                    // }
+
+                    if (animation_progress > 1) {
+                        animation_progress = 1;
+                    }
+                    else if (animation_progress < 0) {
+                        animation_progress = 0;
+                    }
+
+                    return animation_progress;
+
+
+                }
 
             }
         };
