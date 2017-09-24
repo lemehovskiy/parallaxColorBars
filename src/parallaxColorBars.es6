@@ -37,15 +37,15 @@
 
 
                 let scrollTop = 0,
-                    windowHeight = 0,
-                    triggerPosition = 0;
+                    window_height = 0,
+                    trigger;
 
 
                 $(window).on('scroll load', function () {
                     scrollTop = $(window).scrollTop();
-                    windowHeight = $(window).height();
+                    window_height = $(window).height();
 
-                    triggerPosition = scrollTop + windowHeight;
+                    trigger = $(window).scrollTop() + window_height;
                 });
 
 
@@ -64,7 +64,10 @@
                         parallax_section_width = $this_parallax_section.outerWidth(),
                         parallax_section_height = $this_parallax_section.outerHeight(),
                         animation_progress = 0,
-                        mirror_animation_progress = 0;
+                        mirror_animation_progress = 0,
+                        element_animation_start,
+                        element_animation_end,
+                        animation_length;
 
 
                     $(window).on('resize', function () {
@@ -74,23 +77,33 @@
 
 
                     $(window).on('scroll resize load', function () {
-                        animation_progress = get_scroll_progress({
-                            element: $this_parallax_section,
-                            duration: 'viewport',
-                            window_height: windowHeight
+                        element_animation_start = $this_parallax_section.offset().top;
+                        element_animation_end = element_animation_start + window_height + $this_parallax_section.outerHeight();
+                        animation_length = element_animation_end - element_animation_start;
 
-                        });
-
-
-                        mirror_animation_progress = get_mirror_progress(animation_progress);
-
-                        // console.log(mirror_animation_progress);
+                        if (trigger > element_animation_start && trigger < element_animation_end) {
+                            update_progress();
+                        }
 
                     });
 
+
+                    update_progress();
+
+                    function update_progress () {
+                        animation_progress = get_scroll_progress({
+                            element: $this_parallax_section,
+                            trigger: trigger,
+                            window_height: window_height,
+                            element_animation_start: element_animation_start,
+                            animation_length: animation_length
+                        });
+
+                        mirror_animation_progress = get_mirror_progress(animation_progress);
+                    }
+
                     $color_bars.each(function () {
-
-
+                        
                         let $this_bar = $(this);
 
                         let color_bar_options = $this_bar.data('parallax-color-bar');
@@ -105,6 +118,7 @@
                             animateShift = settings.shift,
 
                             $color_bar_background = $this_bar.find('.color-bar-background');
+
 
                         $this_bar.css({
                             top: bar_position_top + '%',
@@ -143,14 +157,14 @@
 
                         })
                     })
-
                 });
+
+
 
 
                 function get_mirror_progress(progress) {
 
                     let mirror_progress = 0;
-
 
                     if (progress > 0.5) {
                         mirror_progress = -(1 - 1 / 0.5 * progress)
@@ -159,29 +173,15 @@
                         mirror_progress = -(1 - 1 / 0.5 * progress)
                     }
 
-
                     return mirror_progress;
-
                 }
 
 
                 function get_scroll_progress(settings) {
 
-                    let $element = settings.element;
-
-                    let trigger = $(window).scrollTop() + settings.window_height;
-
-                    let element_animation_start = $element.offset().top;
-
-                    let element_animation_end = element_animation_start + settings.window_height + $element.outerHeight();
-
-                    let animation_length = element_animation_end - element_animation_start;
-
                     let animation_progress;
 
-                    // if (trigger > element_animation_start && trigger < element_animation_end){
-                    animation_progress = (trigger - element_animation_start) / animation_length;
-                    // }
+                    animation_progress = (settings.trigger - settings.element_animation_start) / settings.animation_length;
 
                     if (animation_progress > 1) {
                         animation_progress = 1;
@@ -191,10 +191,8 @@
                     }
 
                     return animation_progress;
-
-
+                    
                 }
-
             }
         };
 

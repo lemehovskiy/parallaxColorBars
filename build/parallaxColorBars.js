@@ -39,14 +39,14 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                 }, options);
 
                 var scrollTop = 0,
-                    windowHeight = 0,
-                    triggerPosition = 0;
+                    window_height = 0,
+                    trigger = void 0;
 
                 $(window).on('scroll load', function () {
                     scrollTop = $(window).scrollTop();
-                    windowHeight = $(window).height();
+                    window_height = $(window).height();
 
-                    triggerPosition = scrollTop + windowHeight;
+                    trigger = $(window).scrollTop() + window_height;
                 });
 
                 $(window).resize(function () {
@@ -63,7 +63,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         parallax_section_width = $this_parallax_section.outerWidth(),
                         parallax_section_height = $this_parallax_section.outerHeight(),
                         animation_progress = 0,
-                        mirror_animation_progress = 0;
+                        mirror_animation_progress = 0,
+                        element_animation_start = void 0,
+                        element_animation_end = void 0,
+                        animation_length = void 0;
 
                     $(window).on('resize', function () {
                         parallax_section_width = $this_parallax_section.outerWidth();
@@ -71,17 +74,28 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                     });
 
                     $(window).on('scroll resize load', function () {
+                        element_animation_start = $this_parallax_section.offset().top;
+                        element_animation_end = element_animation_start + window_height + $this_parallax_section.outerHeight();
+                        animation_length = element_animation_end - element_animation_start;
+
+                        if (trigger > element_animation_start && trigger < element_animation_end) {
+                            update_progress();
+                        }
+                    });
+
+                    update_progress();
+
+                    function update_progress() {
                         animation_progress = get_scroll_progress({
                             element: $this_parallax_section,
-                            duration: 'viewport',
-                            window_height: windowHeight
-
+                            trigger: trigger,
+                            window_height: window_height,
+                            element_animation_start: element_animation_start,
+                            animation_length: animation_length
                         });
 
                         mirror_animation_progress = get_mirror_progress(animation_progress);
-
-                        // console.log(mirror_animation_progress);
-                    });
+                    }
 
                     $color_bars.each(function () {
 
@@ -146,21 +160,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
                 function get_scroll_progress(settings) {
 
-                    var $element = settings.element;
-
-                    var trigger = $(window).scrollTop() + settings.window_height;
-
-                    var element_animation_start = $element.offset().top;
-
-                    var element_animation_end = element_animation_start + settings.window_height + $element.outerHeight();
-
-                    var animation_length = element_animation_end - element_animation_start;
-
                     var animation_progress = void 0;
 
-                    // if (trigger > element_animation_start && trigger < element_animation_end){
-                    animation_progress = (trigger - element_animation_start) / animation_length;
-                    // }
+                    animation_progress = (settings.trigger - settings.element_animation_start) / settings.animation_length;
 
                     if (animation_progress > 1) {
                         animation_progress = 1;
