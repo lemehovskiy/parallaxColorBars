@@ -90,7 +90,7 @@
 
                     update_progress();
 
-                    function update_progress () {
+                    function update_progress() {
                         animation_progress = get_scroll_progress({
                             element: $this_parallax_section,
                             trigger: trigger,
@@ -103,10 +103,11 @@
                     }
 
                     $color_bars.each(function () {
-                        
+
                         let $this_bar = $(this);
 
                         let color_bar_options = $this_bar.data('parallax-color-bar');
+
                         settings = $.extend({}, settings, color_bar_options);
 
                         let bar_position_top = settings.top,
@@ -117,8 +118,8 @@
                             animateDuration = settings.duration,
                             animateShift = settings.shift,
 
-                            $color_bar_background = $this_bar.find('.color-bar-background');
-
+                            $color_bar_background = $this_bar.find('.color-bar-background'),
+                            y = animateShift * mirror_animation_progress;
 
                         $this_bar.css({
                             top: bar_position_top + '%',
@@ -127,14 +128,11 @@
                             overflow: 'hidden',
                             width: bar_width + '%',
                             height: bar_height + '%'
-
                         });
-
 
                         $color_bar_background.css({
                             position: 'absolute'
                         });
-
 
                         $(window).bind('resizeEnd load', function () {
                             $color_bar_background.css({
@@ -143,23 +141,32 @@
                                 left: -(parallax_section_width / 100 * bar_position_left) + 'px',
                                 top: -(parallax_section_height / 100 * bar_position_top) + 'px'
                             });
-
                         });
 
+                        $(window).on('scroll resize load', function (e) {
 
-                        $(window).on('scroll resize load', function () {
+                            if (e.type == 'load') {
+                                set_init_position();
+                            }
+                            animate();
+                        });
 
-                            let y = animateShift * mirror_animation_progress;
+                        function set_init_position(){
+                            y = animateShift * mirror_animation_progress;
+
+                            TweenLite.set($this_bar, {y: y + 'px'});
+                            TweenLite.set($color_bar_background, {y: -y + 'px'});
+                        }
+
+                        function animate(){
+                            y = animateShift * mirror_animation_progress;
 
                             TweenLite.to($this_bar, animateDuration, {y: y + 'px'});
                             TweenLite.to($color_bar_background, animateDuration, {y: -y + 'px'});
+                        }
 
-
-                        })
                     })
                 });
-
-
 
 
                 function get_mirror_progress(progress) {
@@ -191,7 +198,7 @@
                     }
 
                     return animation_progress;
-                    
+
                 }
             }
         };

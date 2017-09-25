@@ -102,6 +102,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                         var $this_bar = $(this);
 
                         var color_bar_options = $this_bar.data('parallax-color-bar');
+
                         settings = $.extend({}, settings, color_bar_options);
 
                         var bar_position_top = settings.top,
@@ -110,7 +111,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                             bar_height = settings.height,
                             animateDuration = settings.duration,
                             animateShift = settings.shift,
-                            $color_bar_background = $this_bar.find('.color-bar-background');
+                            $color_bar_background = $this_bar.find('.color-bar-background'),
+                            y = animateShift * mirror_animation_progress;
 
                         $this_bar.css({
                             top: bar_position_top + '%',
@@ -119,7 +121,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                             overflow: 'hidden',
                             width: bar_width + '%',
                             height: bar_height + '%'
-
                         });
 
                         $color_bar_background.css({
@@ -135,13 +136,27 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
                             });
                         });
 
-                        $(window).on('scroll resize load', function () {
+                        $(window).on('scroll resize load', function (e) {
 
-                            var y = animateShift * mirror_animation_progress;
+                            if (e.type == 'load') {
+                                set_init_position();
+                            }
+                            animate();
+                        });
+
+                        function set_init_position() {
+                            y = animateShift * mirror_animation_progress;
+
+                            TweenLite.set($this_bar, { y: y + 'px' });
+                            TweenLite.set($color_bar_background, { y: -y + 'px' });
+                        }
+
+                        function animate() {
+                            y = animateShift * mirror_animation_progress;
 
                             TweenLite.to($this_bar, animateDuration, { y: y + 'px' });
                             TweenLite.to($color_bar_background, animateDuration, { y: -y + 'px' });
-                        });
+                        }
                     });
                 });
 
